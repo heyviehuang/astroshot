@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", () => {
+﻿document.addEventListener("DOMContentLoaded", () => {
     const page = document.body?.dataset?.page || "home";
     const boot = {
         home: initHomePage,
@@ -22,20 +22,9 @@ const QUALITY_COPY = {
     error: "資料有狀況",
 };
 
-const MOON_PHASE_LABELS = {
-    "New moon": "新月",
-    "Waxing crescent": "眉月",
-    "First quarter": "上弦月",
-    "Waxing gibbous": "盈凸月",
-    "Full moon": "滿月",
-    "Waning gibbous": "虧凸月",
-    "Last quarter": "下弦月",
-    "Waning crescent": "殘月",
-};
-
 const DEFAULT_OBSERVATION_NOTES = {
     bortle: "Bortle 5-6（建議遠離市區，尋找高地或海岸線）",
-    suggest: "可嘗試星軌、亮景與星空雙重曝光，並留意月光方向。",
+    suggest: "可嘗試星軌、亮景與星空多重曝光，並留意月光方向。",
 };
 
 const DEFAULT_LOCATION = {
@@ -133,7 +122,6 @@ const WEEKLY_RECOMMENDATIONS = [
         tip: "以 24mm F2.8 每 10 秒取一張，後製疊合呈現旋轉動態。",
     },
 ];
-
 function initHomePage() {
     const input = document.getElementById("location-input");
     const button = document.getElementById("check-btn");
@@ -214,7 +202,7 @@ function setPanelLoading(panel, query) {
     bortleEl.textContent = "光害：分析中…";
     moonEl.textContent = "月相：查詢中…";
     suggestEl.textContent = "建議：整理中…";
-    updatedEl.textContent = "資料來源：Open-Meteo（無金鑰）";
+    updatedEl.textContent = "資料來源：Open-Meteo（雲量/能見度）· 月相估算";
     errorEl.hidden = true;
 }
 
@@ -246,7 +234,7 @@ function renderObservation(panel, resolved, summary) {
     bortleEl.textContent = `光害：${summary.bortle}`;
     moonEl.textContent = `月相：${summary.moonSummary}`;
     suggestEl.textContent = `建議：${summary.suggestion}`;
-    updatedEl.textContent = `資料來源：Open-Meteo · 更新時間 ${summary.updatedLabel}`;
+    updatedEl.textContent = `資料來源：Open-Meteo（雲量/能見度）· 月相估算 · 更新時間 ${summary.updatedLabel}`;
     errorEl.hidden = true;
 }
 
@@ -277,10 +265,13 @@ function renderObservationError(panel, query, error) {
     bortleEl.textContent = "光害：—";
     moonEl.textContent = "月相：—";
     suggestEl.textContent = "建議：請稍後再試或改用預設地點。";
-    updatedEl.textContent = "資料來源：Open-Meteo · 近期查詢失敗";
+    updatedEl.textContent =
+        "資料來源：Open-Meteo（雲量/能見度）· 月相估算 · 近期查詢失敗";
     errorEl.hidden = false;
-    errorEl.textContent =
-        "無法取得即時資料，伺服器可能繁忙或無法解析該地點。";
+    const detail =
+        (error && typeof error.message === "string" && error.message.trim()) ||
+        "伺服器可能繁忙或無法解析該地點。";
+    errorEl.textContent = `無法取得即時資料：${detail}`;
 }
 
 async function resolveLocation(query) {
@@ -354,38 +345,62 @@ async function geocodeLocation(query) {
 }
 
 async function fetchForecast(coords) {
-    const params = new URLSearchParams({
-        latitude: coords.lat,
-        longitude: coords.lon,
-        hourly:
-            "cloudcover,cloudcover_low,cloudcover_mid,cloudcover_high,visibility,precipitation_probability",
-        daily: "sunrise,sunset,moonrise,moonset,moon_phase,moon_phase_name",
-        timezone: "auto",
-        timeformat: "unixtime",
-        forecast_days: "2",
-    });
+    const params = new URLSearchParams();
+    params.set("latitude", coords.lat);
+    params.set("longitude", coords.lon);
+    params.set("timezone", "auto");
+    params.set("timeformat", "unixtime");
+    params.set("forecast_days", "2");
+
+    [
+        "cloudcover",
+        "cloudcover_low",
+        "cloudcover_mid",
+        "cloudcover_high",
+        "visibility",
+        "precipitation_probability",
+    ].forEach((key) => params.append("hourly", key));
+
+    ["sunrise", "sunset"].forEach((key) => params.append("daily", key));
 
     const response = await fetch(`${OPEN_METEO_FORECAST_URL}?${params}`);
-    if (!response.ok) {
-        throw new Error("氣象資料服務暫時無法使用");
+    const raw = await response.text();
+
+    let data = null;
+    try {
+        data = raw ? JSON.parse(raw) : null;
+    } catch (parseError) {
+        throw new Error("氣象資料服務暫時無法使用：回應格式無法解析");
     }
 
-    return response.json();
+    if (!response.ok || data?.error) {
+        const reason =
+            data?.reason ||
+            (typeof data?.error === "string" ? data.error : "") ||
+            response.statusText ||
+            "";
+        const message = reason
+            ? `氣象資料服務暫時無法使用：${reason}`
+            : "氣象資料服務暫時無法使用";
+        throw new Error(message);
+    }
+
+    return data;
 }
 
-function buildObservationSummary(resolved, forecast) {
+function buildObservationSummary(resolved, forecast, astronomy) {
     const timezone = forecast.timezone || "Asia/Taipei";
     const now = Math.floor(Date.now() / 1000);
 
     const daily = forecast.daily ?? {};
     const hourly = forecast.hourly ?? {};
+    const astroDaily = astronomy?.daily ?? {};
 
     const sunsetTimes = daily.sunset || [];
     const sunriseTimes = daily.sunrise || [];
-    const moonRiseTimes = daily.moonrise || [];
-    const moonSetTimes = daily.moonset || [];
-    const moonPhaseNames = daily.moon_phase_name || [];
-    const moonPhaseValues = daily.moon_phase || [];
+    const moonRiseTimes = astroDaily.moonrise || [];
+    const moonSetTimes = astroDaily.moonset || [];
+    const moonPhaseValues = astroDaily.moon_phase || [];
 
     const windowStart = computeNightStart(now, sunsetTimes);
     const windowEnd = computeNightEnd(windowStart, sunriseTimes);
@@ -418,8 +433,15 @@ function buildObservationSummary(resolved, forecast) {
     const maxPrecip = Math.max(...precipValues, 0);
     const avgVisibility = average(visibilityValues);
 
-    const moonPhaseName = moonPhaseNames[0] || "";
-    const moonPhaseValue = moonPhaseValues[0] ?? null;
+    const moonPhaseApiValue = Array.isArray(moonPhaseValues)
+        ? moonPhaseValues.find((value) => isFiniteNumber(value))
+        : null;
+    const moonPhaseFraction =
+        moonPhaseApiValue != null && isFiniteNumber(moonPhaseApiValue)
+            ? moonPhaseApiValue
+            : computeMoonPhaseFraction(now);
+    const moonIllumination = computeMoonIllumination(moonPhaseFraction);
+    const moonPhaseInfo = describeMoonPhase(moonPhaseFraction);
     const moonRise = moonRiseTimes.find((time) => time >= windowStart) ?? null;
     const moonSet = moonSetTimes.find((time) => time >= now) ?? null;
 
@@ -441,8 +463,8 @@ function buildObservationSummary(resolved, forecast) {
             sampleCount: sample.length,
         }),
         moonSummary: formatMoonSummary({
-            moonPhaseName,
-            moonPhaseValue,
+            moonPhaseLabel: moonPhaseInfo.label,
+            moonIllumination,
             moonRise,
             moonSet,
             timezone,
@@ -450,7 +472,7 @@ function buildObservationSummary(resolved, forecast) {
         bortle: resolved.bortle || DEFAULT_OBSERVATION_NOTES.bortle,
         suggestion:
             resolved.suggest ||
-            computeSuggestion({ averageCloud, maxPrecip, moonPhaseValue }),
+            computeSuggestion({ averageCloud, maxPrecip, moonIllumination }),
         updatedLabel: formatTimestamp(now, timezone),
     };
 }
@@ -561,12 +583,78 @@ function formatCloudSummary({ averageCloud, minCloud, maxCloud, sampleCount }) {
     return `平均 ${avg}% ${range}${sample}`;
 }
 
-function formatMoonSummary({ moonPhaseName, moonPhaseValue, moonRise, moonSet, timezone }) {
-    const phaseLabel =
-        MOON_PHASE_LABELS[moonPhaseName] || moonPhaseName || "月相資料更新中";
+function computeMoonPhaseFraction(timestampSeconds) {
+    if (!isFiniteNumber(timestampSeconds)) {
+        return NaN;
+    }
 
-    const illumination =
-        moonPhaseValue != null ? `${Math.round(moonPhaseValue * 100)}% 光亮度` : "";
+    const synodicMonth = 29.530588853;
+    const referenceNewMoon = Date.UTC(2000, 0, 6, 18, 14, 0) / 1000;
+    const daysSince = (timestampSeconds - referenceNewMoon) / 86400;
+    const normalized = ((daysSince % synodicMonth) + synodicMonth) % synodicMonth;
+    return normalized / synodicMonth;
+}
+
+function computeMoonIllumination(phaseFraction) {
+    if (!isFiniteNumber(phaseFraction)) {
+        return NaN;
+    }
+
+    const illumination = (1 - Math.cos(2 * Math.PI * phaseFraction)) / 2;
+    return Math.min(Math.max(illumination, 0), 1);
+}
+
+function describeMoonPhase(value) {
+    if (!isFiniteNumber(value)) {
+        return { label: "", english: "" };
+    }
+
+    const normalized = ((value % 1) + 1) % 1;
+
+    if (normalized < 0.03 || normalized > 0.97) {
+        return { label: "新月", english: "New moon" };
+    }
+
+    if (normalized < 0.22) {
+        return { label: "眉月", english: "Waxing crescent" };
+    }
+
+    if (normalized < 0.28) {
+        return { label: "上弦月", english: "First quarter" };
+    }
+
+    if (normalized < 0.47) {
+        return { label: "盈凸月", english: "Waxing gibbous" };
+    }
+
+    if (normalized < 0.53) {
+        return { label: "滿月", english: "Full moon" };
+    }
+
+    if (normalized < 0.72) {
+        return { label: "虧凸月", english: "Waning gibbous" };
+    }
+
+    if (normalized < 0.78) {
+        return { label: "下弦月", english: "Last quarter" };
+    }
+
+    return { label: "殘月", english: "Waning crescent" };
+}
+
+function formatMoonSummary({
+    moonPhaseLabel,
+    moonIllumination,
+    moonRise,
+    moonSet,
+    timezone,
+}) {
+    const phaseLabel = moonPhaseLabel || "月相資料更新中";
+
+    const illuminationPercent = isFiniteNumber(moonIllumination)
+        ? Math.round(moonIllumination * 100)
+        : null;
+    const illumination = illuminationPercent != null ? `${illuminationPercent}% 光照` : "";
 
     const riseText = moonRise
         ? `月出 ${formatTime(moonRise, timezone)}`
@@ -578,12 +666,16 @@ function formatMoonSummary({ moonPhaseName, moonPhaseValue, moonRise, moonSet, t
     return `${phaseLabel}${illumination ? `（${illumination}）` : ""} · ${riseText} · ${setText}`;
 }
 
-function computeSuggestion({ averageCloud, maxPrecip, moonPhaseValue }) {
+function computeSuggestion({ averageCloud, maxPrecip, moonIllumination }) {
     if (!isFiniteNumber(averageCloud)) {
         return "雲量資料不足，建議備妥縮時或星軌方案。";
     }
 
-    if (averageCloud < 30 && (moonPhaseValue ?? 0) < 0.6 && maxPrecip < 30) {
+    const illumination = isFiniteNumber(moonIllumination)
+        ? moonIllumination
+        : 1;
+
+    if (averageCloud < 30 && illumination < 0.6 && maxPrecip < 30) {
         return "嘗試銀河、銀河拱橋或深空拍攝，記得避開地面光害。";
     }
 
@@ -985,3 +1077,4 @@ function initGuidesPage() {
         });
     });
 }
+
