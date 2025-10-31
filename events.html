@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="utf-8" />
+    <title>AstroShot｜天象事件行事曆</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+
+<body class="page" data-page="events">
+    <header class="topbar">
+        <div class="logo">AstroShot</div>
+        <nav class="nav">
+            <a href="index.html" class="nav__link">今日</a>
+            <a href="locations.html" class="nav__link">地點指南</a>
+            <a href="events.html" class="nav__link nav__link--active">天象事件</a>
+            <a href="guides.html" class="nav__link">技巧教學</a>
+        </nav>
+    </header>
+
+    <main class="main">
+        <section class="section section--hero section--stack">
+            <div>
+                <p class="chip">年度天象總覽</p>
+                <h1 class="hero__title">掌握近期必拍天象</h1>
+                <p class="hero__subtitle">
+                    按照事件類型整理觀測重點，提供最佳時段、亮度資訊與拍攝建議，
+                    幫助你提前規劃器材與行程。
+                </p>
+            </div>
+            <aside class="note">
+                <h2>如何使用</h2>
+                <ul>
+                    <li>下方可依事件類型快速篩選。</li>
+                    <li>留意最大時刻與月相，掌握最佳拍攝窗口。</li>
+                    <li>觀測時請注意安全與保暖，並尊重自然環境。</li>
+                </ul>
+            </aside>
+        </section>
+
+        <section class="section">
+            <div class="section__header">
+                <h2 class="section__title">即將到來的重點天象</h2>
+                <div class="filter">
+                    <label class="form__label">
+                        <span>篩選事件類型</span>
+                        <select class="select" data-events-filter>
+                            <option value="all">全部類型</option>
+                            <option value="milkyway">銀河</option>
+                            <option value="meteor">流星雨</option>
+                            <option value="planet">行星</option>
+                            <option value="deep">深空</option>
+                            <option value="eclipse">日月食</option>
+                        </select>
+                    </label>
+                </div>
+            </div>
+
+            <div class="event-list" data-events-list></div>
+        </section>
+
+        <section class="section">
+            <div class="section__header">
+                <h2 class="section__title">觀測規劃建議</h2>
+            </div>
+            <div class="grid grid--three">
+                <article class="card card--plain">
+                    <h3>前置規劃</h3>
+                    <ul class="bullet-list">
+                        <li>使用天象模擬軟體（如 Stellarium）預先繪製視角。</li>
+                        <li>將月相、日出日落與天象時間整合在行事曆。</li>
+                        <li>儘早預訂住宿與交通，避免熱門假期客滿。</li>
+                    </ul>
+                </article>
+                <article class="card card--plain">
+                    <h3>現場拍攝</h3>
+                    <ul class="bullet-list">
+                        <li>提前 1 小時到場取景，避免手忙腳亂。</li>
+                        <li>設定手動對焦於無限遠，並檢查實際成功率。</li>
+                        <li>使用 RAW 格式，以保留最大後製寬容度。</li>
+                    </ul>
+                </article>
+                <article class="card card--plain">
+                    <h3>後製整理</h3>
+                    <ul class="bullet-list">
+                        <li>流星雨可使用軟體自動挑選亮流星再合成。</li>
+                        <li>星軌建議使用多張堆疊，降低噪點。</li>
+                        <li>適度加強局部對比，保留自然色彩。</li>
+                    </ul>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>© 2025 AstroShot · 致力打造華語最佳星空攝影工具</p>
+    </footer>
+
+    <script src="assets/js/main.js"></script>
+</body>
+</html>

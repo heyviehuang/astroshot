@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="utf-8" />
+    <title>AstroShot｜星空攝影技巧教學</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+
+<body class="page" data-page="guides">
+    <header class="topbar">
+        <div class="logo">AstroShot</div>
+        <nav class="nav">
+            <a href="index.html" class="nav__link">今日</a>
+            <a href="locations.html" class="nav__link">地點指南</a>
+            <a href="events.html" class="nav__link">天象事件</a>
+            <a href="guides.html" class="nav__link nav__link--active">技巧教學</a>
+        </nav>
+    </header>
+
+    <main class="main">
+        <section class="section section--hero section--stack">
+            <div>
+                <p class="chip">從入門到進階</p>
+                <h1 class="hero__title">打造自己的星空攝影流程</h1>
+                <p class="hero__subtitle">
+                    無論你使用手機、無反相機或專業天文設備，這裡為你整理拍攝星空
+                    的核心概念、設定範例與後製流程。
+                </p>
+            </div>
+            <aside class="note">
+                <h2>學習路線</h2>
+                <ol>
+                    <li>理解曝光三角與夜間對焦技巧。</li>
+                    <li>建立拍攝流程，從場勘到備案。</li>
+                    <li>熟悉後製軟體，打造個人風格。</li>
+                </ol>
+            </aside>
+        </section>
+
+        <section class="section">
+            <div class="section__header">
+                <h2 class="section__title">拍攝題材攻略</h2>
+                <p class="section__subtitle">
+                    點擊下方主題展開詳細步驟與建議設定。
+                </p>
+            </div>
+
+            <div class="guide">
+                <button class="guide__toggle" type="button" data-guide-toggle="guide-milkyway" aria-expanded="false">
+                    銀河拱橋快速流程
+                </button>
+                <div class="guide__panel" id="guide-milkyway">
+                    <div class="grid grid--two">
+                        <article class="card card--plain">
+                            <h3>前期準備</h3>
+                            <ul class="bullet-list">
+                                <li>使用 PhotoPills 或 Stellarium 預測銀河位置。</li>
+                                <li>確認月相與日落時間，挑選新月前後兩天。</li>
+                                <li>攜帶超廣角鏡頭（14-20mm）與堅固腳架。</li>
+                            </ul>
+                        </article>
+                        <article class="card card--plain">
+                            <h3>拍攝設定</h3>
+                            <ul class="bullet-list">
+                                <li>模式：M；光圈 F2.0-2.8；ISO 3200-6400。</li>
+                                <li>曝光：依 500 法則計算，約 15-20 秒。</li>
+                                <li>對焦：以放大 Live View 對遠方亮星鎖定。</li>
+                            </ul>
+                        </article>
+                    </div>
+                    <article class="card card--plain card--spacious">
+                        <h3>後製重點</h3>
+                        <ul class="bullet-list">
+                            <li>Lightroom：調整白平衡至 3800K 左右，提升對比。</li>
+                            <li>PS / Starry Landscape Stacker：疊圖降噪並保留前景。</li>
+                            <li>局部強化銀心色彩，但避免過度飽和。</li>
+                        </ul>
+                    </article>
+                </div>
+
+                <button class="guide__toggle" type="button" data-guide-toggle="guide-meteor" aria-expanded="false">
+                    流星雨連拍技巧
+                </button>
+                <div class="guide__panel" id="guide-meteor">
+                    <div class="grid grid--two">
+                        <article class="card card--plain">
+                            <h3>觀測建議</h3>
+                            <ul class="bullet-list">
+                                <li>選擇暗空地點，視野需涵蓋輻射點前後 60°。</li>
+                                <li>月亮高掛時改以廣角帶上景拍攝，避免畫面過亮。</li>
+                                <li>準備兩台相機交叉拍攝，提高命中率。</li>
+                            </ul>
+                        </article>
+                        <article class="card card--plain">
+                            <h3>設定範例</h3>
+                            <ul class="bullet-list">
+                                <li>曝光 10-15 秒，ISO 6400，F2.8。</li>
+                                <li>連拍間隔 1 秒內，確保不中斷。</li>
+                                <li>使用長曝降噪關閉，以免錯過下一張。</li>
+                            </ul>
+                        </article>
+                    </div>
+                    <article class="card card--plain card--spacious">
+                        <h3>後製合成</h3>
+                        <ul class="bullet-list">
+                            <li>以序列匯入 Lightroom，進行批次曝光與色彩校正。</li>
+                            <li>挑選亮流星於 Photoshop 疊加至主背景。</li>
+                            <li>若要呈現動態可使用 StarStaX 合成輻射狀軌跡。</li>
+                        </ul>
+                    </article>
+                </div>
+
+                <button class="guide__toggle" type="button" data-guide-toggle="guide-deepsky" aria-expanded="false">
+                    深空攝影入門
+                </button>
+                <div class="guide__panel" id="guide-deepsky">
+                    <div class="grid grid--two">
+                        <article class="card card--plain">
+                            <h3>裝備清單</h3>
+                            <ul class="bullet-list">
+                                <li>赤道儀或星野追蹤器，建議承重至少 5kg。</li>
+                                <li>長焦鏡頭（100-200mm）或小望遠鏡。</li>
+                                <li>導星鏡與導星相機，可提升單張曝光時間。</li>
+                            </ul>
+                        </article>
+                        <article class="card card--plain">
+                            <h3>拍攝流程</h3>
+                            <ul class="bullet-list">
+                                <li>極軸校準至誤差 2 弧分內。</li>
+                                <li>單張曝光 120-240 秒，至少拍攝 60 張。</li>
+                                <li>同場拍攝 Dark / Flat / Bias 校正影像。</li>
+                            </ul>
+                        </article>
+                    </div>
+                    <article class="card card--plain card--spacious">
+                        <h3>後期建議</h3>
+                        <ul class="bullet-list">
+                            <li>使用 DeepSkyStacker 或 PixInsight 完成堆疊。</li>
+                            <li>分離星點與星雲處理，避免星點過曝。</li>
+                            <li>以曲線與遮罩針對性強化細節與色彩層次。</li>
+                        </ul>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section__header">
+                <h2 class="section__title">進階工具推薦</h2>
+            </div>
+            <div class="grid grid--three">
+                <article class="card card--plain">
+                    <h3>行程規劃</h3>
+                    <p>PhotoPills、PlanIt Pro、Heavens-Above</p>
+                </article>
+                <article class="card card--plain">
+                    <h3>氣象查詢</h3>
+                    <p>Windy、中央氣象局山區天氣、GOES 雲圖</p>
+                </article>
+                <article class="card card--plain">
+                    <h3>後製軟體</h3>
+                    <p>Lightroom / Photoshop、PixInsight、Topaz Denoise</p>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>© 2025 AstroShot · 致力打造華語最佳星空攝影工具</p>
+    </footer>
+
+    <script src="assets/js/main.js"></script>
+</body>
+</html>

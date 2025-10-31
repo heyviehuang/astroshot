@@ -1,84 +1,97 @@
 <!doctype html>
 <html lang="zh-Hant">
+<head>
+    <meta charset="utf-8" />
+    <title>AstroShot｜今晚適合拍星嗎？</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="assets/css/style.css" />
+</head>
 
-    <head>
-        <meta charset="utf-8" />
-        <title>星攝情報站 | AstroShot</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="stylesheet" href="assets/css/style.css" />
-    </head>
+<body class="page" data-page="home">
+    <header class="topbar">
+        <div class="logo">AstroShot</div>
+        <nav class="nav">
+            <a href="index.html" class="nav__link nav__link--active">今日</a>
+            <a href="locations.html" class="nav__link">地點指南</a>
+            <a href="events.html" class="nav__link">天象事件</a>
+            <a href="guides.html" class="nav__link">技巧教學</a>
+        </nav>
+    </header>
 
-    <body class="page">
-        <header class="topbar">
-            <div class="logo">✨ AstroShot</div>
-            <nav class="nav">
-                <a href="index.html" class="nav__link nav__link--active">今日</a>
-                <a href="locations.html" class="nav__link">拍攝地點</a>
-                <a href="events.html" class="nav__link">天文事件</a>
-                <a href="guides.html" class="nav__link">拍攝教學</a>
-            </nav>
-        </header>
+    <main class="main">
+        <section class="section section--hero">
+            <div>
+                <p class="chip">一步掌握觀測條件</p>
+                <h1 class="hero__title">今晚適合拍星嗎？</h1>
+                <p class="hero__subtitle">
+                    AstroShot 整合雲量、光害和月相資訊，幫你快速判斷最佳
+                    拍攝時段與建議題材。
+                </p>
 
-        <main class="main">
-            <!-- 今日觀測條件 -->
-            <section class="section section--hero">
-                <div>
-                    <h1 class="hero__title">今晚能不能拍？</h1>
-                    <p class="hero__subtitle">選擇你的地點，我們幫你看雲量、光害、月相。</p>
-
-                    <div class="hero__controls">
-                        <label class="form__label">
-                            <span>地點</span>
-                            <input id="location-input" class="input" type="text" placeholder="例如：新竹縣五峰鄉" />
-                        </label>
-                        <button id="check-btn" class="btn">查看拍攝條件</button>
-                    </div>
+                <div class="hero__controls">
+                    <label class="form__label">
+                        <span>觀測地點</span>
+                        <input
+                            id="location-input"
+                            class="input"
+                            type="text"
+                            placeholder="例如：南投縣合歡山"
+                            autocomplete="off"
+                        />
+                    </label>
+                    <button id="check-btn" class="btn">檢查今晚條件</button>
                 </div>
-                <div class="hero__panel" id="condition-panel">
-                    <p class="small">目前狀態</p>
-                    <h2 class="status status--unknown">尚未查詢</h2>
-                    <ul class="status-list">
-                        <li>雲量：--</li>
-                        <li>光害：--</li>
-                        <li>月相：--</li>
-                        <li>建議拍攝：--</li>
-                    </ul>
-                </div>
-            </section>
+                <p class="helper">
+                    小提示：先輸入縣市或熱門暗空地點。如果找不到會提供泛用建議。
+                </p>
+            </div>
+            <div class="hero__panel" id="condition-panel">
+                <p class="small">即時觀測條件</p>
+                <h2 class="status status--unknown" data-status-text>尚未查詢</h2>
+                <ul class="status-list">
+                    <li data-cloud>雲量 -</li>
+                    <li data-bortle>光害 -</li>
+                    <li data-moon>月相 -</li>
+                    <li data-suggest>建議拍攝題材 -</li>
+                </ul>
+                <p class="panel__update" data-updated-at>—</p>
+                <p class="panel__error" data-error hidden></p>
+            </div>
+        </section>
 
-            <!-- 本週推薦 -->
-            <section class="section">
-                <h2 class="section__title">本週推薦觀測</h2>
-                <div class="cards" id="weekly-cards">
-                    <!-- JS 會塞推薦 -->
-                </div>
-            </section>
+        <section class="section">
+            <div class="section__header">
+                <h2 class="section__title">本週拍攝推薦</h2>
+                <p class="section__subtitle">
+                    精選四個時段，涵蓋銀河、流星雨與深空拍攝，快速安排你的出發計畫。
+                </p>
+            </div>
+            <div class="cards" id="weekly-cards"></div>
+        </section>
 
-            <!-- 快速導覽 -->
-            <section class="section section--grid">
-                <article class="card card--link">
-                    <h3>彗星 / 流星雨</h3>
-                    <p>看本月可見的天象事件，附拍攝參數建議。</p>
-                    <a href="events.html" class="card__more">前往事件頁 →</a>
-                </article>
-                <article class="card card--link">
-                    <h3>低光害地點</h3>
-                    <p>依照縣市找山區、海邊、離島的拍攝點。</p>
-                    <a href="locations.html" class="card__more">看地點 →</a>
-                </article>
-                <article class="card card--link">
-                    <h3>拍攝教學</h3>
-                    <p>銀河、星軌、月亮、行星，一步一步教。</p>
-                    <a href="guides.html" class="card__more">開始學 →</a>
-                </article>
-            </section>
-        </main>
+        <section class="section section--grid">
+            <article class="card card--link">
+                <h3>熱門天象行事曆</h3>
+                <p>每月整理流星雨、行星合月、彗星掠過等精彩天象。</p>
+                <a href="events.html" class="card__more">查看事件總表 →</a>
+            </article>
+            <article class="card card--link">
+                <h3>低光害拍攝地</h3>
+                <p>依山區、海邊與離島分類推薦，附帶交通與備註。</p>
+                <a href="locations.html" class="card__more">探索地點 →</a>
+            </article>
+            <article class="card card--link">
+                <h3>器材與技巧</h3>
+                <p>從手機到天文相機，提供不同題材的拍攝建議。</p>
+                <a href="guides.html" class="card__more">開始學習 →</a>
+            </article>
+        </section>
+    </main>
 
-        <footer class="footer">
-            <p>© 2025 AstroShot. Built by 啾啾 🐤</p>
-        </footer>
+    <footer class="footer">
+        <p>© 2025 AstroShot · 致力打造華語最佳星空攝影工具</p>
+    </footer>
 
-        <script src="assets/js/main.js"></script>
-    </body>
-
+    <script src="assets/js/main.js"></script>
+</body>
 </html>

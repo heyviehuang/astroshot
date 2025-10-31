@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="utf-8" />
+    <title>AstroShot｜台灣低光害拍攝地點指南</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+
+<body class="page" data-page="locations">
+    <header class="topbar">
+        <div class="logo">AstroShot</div>
+        <nav class="nav">
+            <a href="index.html" class="nav__link">今日</a>
+            <a href="locations.html" class="nav__link nav__link--active">地點指南</a>
+            <a href="events.html" class="nav__link">天象事件</a>
+            <a href="guides.html" class="nav__link">技巧教學</a>
+        </nav>
+    </header>
+
+    <main class="main">
+        <section class="section section--hero section--stack">
+            <div>
+                <p class="chip">暗空探索</p>
+                <h1 class="hero__title">精選台灣星空拍攝地圖</h1>
+                <p class="hero__subtitle">
+                    依照地形分類整理熱門暗空地點，附上光害指數、交通建議與拍攝重點，
+                    幫助你快速挑選下一次出發的最佳地點。
+                </p>
+            </div>
+            <aside class="note">
+                <h2>拍攝前請先確認：</h2>
+                <ul>
+                    <li>是否需要進入山區、林道或申請入園證。</li>
+                    <li>最新天氣預報與道路封閉資訊。</li>
+                    <li>尊重當地居民與土地，離開時務必帶走所有垃圾。</li>
+                </ul>
+            </aside>
+        </section>
+
+        <section class="section">
+            <div class="section__header">
+                <h2 class="section__title">依地形探索暗空</h2>
+                <p class="section__subtitle">
+                    依照高山、海岸與離島分類，點擊標籤即可切換各區推薦名單。
+                </p>
+            </div>
+
+            <div class="tabs">
+                <button type="button" class="tab" data-location-tab="mountain">高山</button>
+                <button type="button" class="tab" data-location-tab="coastal">海岸</button>
+                <button type="button" class="tab" data-location-tab="island">離島</button>
+            </div>
+
+            <div class="location-list" data-location-list></div>
+        </section>
+
+        <section class="section">
+            <div class="section__header">
+                <h2 class="section__title">野外拍攝必備清單</h2>
+                <p class="section__subtitle">
+                    長時間夜拍需要做好器材與安全準備，以下建議可協助你減少變數。
+                </p>
+            </div>
+
+            <div class="grid grid--two">
+                <article class="card card--plain">
+                    <h3>器材建議</h3>
+                    <ul class="bullet-list">
+                        <li>廣角鏡頭（14-24mm）或可換鏡頭相機。</li>
+                        <li>穩固腳架與雲台、快門線或遙控器。</li>
+                        <li>備用電池三顆以上，冬季需保暖袋保溫。</li>
+                        <li>紅光頭燈、暖手包與防潮箱乾燥劑。</li>
+                    </ul>
+                </article>
+                <article class="card card--plain">
+                    <h3>安全提醒</h3>
+                    <ul class="bullet-list">
+                        <li>提前告知行程，結伴同行較安全。</li>
+                        <li>高山注意高原反應，慢速上山並補水。</li>
+                        <li>海岸地區留意潮汐與驚濤，勿背對海面。</li>
+                        <li>尊重自然與私人土地，遵守在地規範。</li>
+                    </ul>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>© 2025 AstroShot · 致力打造華語最佳星空攝影工具</p>
+    </footer>
+
+    <script src="assets/js/main.js"></script>
+</body>
+</html>
